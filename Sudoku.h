@@ -4,15 +4,13 @@ class Sudoku{
 	Sudoku();
 	void solve();					//solve Sudoku
 	bool solver(int row,int col);	//solve Sudoku row by row
-	bool solver2(int row,int col);	//solve Sudoku col by col
 	void readIn();					//readIn Sudoku board
 	void printmap();				//printout Sudoku board
 	bool check();					//check if Sudoku valid
 	bool checkRow();
 	bool checkCol();
 	bool checkCell();
-
-
+	bool checkmul();
 	void changeNum(int a,int b);	//change two single number in the board
     void changeRow(int a,int b);	//change row0->row3 row1->row4 row2->row5(as you type"changeNum(0,1)")
 	void changeCol(int a,int b);	//same as changeRow but change in column
@@ -23,4 +21,5 @@ class Sudoku{
 	static const int sudokuSize = 81;
 	private:
 	int map[sudokuSize];
+	int num[9];
 };

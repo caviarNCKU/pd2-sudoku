@@ -109,7 +109,7 @@ bool Sudoku::checkCell(){
 
 bool Sudoku::solver(int row,int col){
 	if(col==9){
-		return true;
+			return true;
 	}
 	if(map[row+col*9]!=0){
 			if(row==8){
@@ -123,8 +123,8 @@ bool Sudoku::solver(int row,int col){
 			return false;
 		}
 
-	for(int num=1;num<10;num++){
-		map[row+col*9]=num;
+	for(int i=0;i<9;i++){
+		map[row+col*9]=num[i];
 		if(check()==true){
 			if(row==8){
 				if(solver(0,col+1))
@@ -137,61 +137,55 @@ bool Sudoku::solver(int row,int col){
 		}
 			map[row+col*9]=0;
 	}
+	return false;
 }
-
-bool Sudoku::solver2(int row,int col){
-	if(row==9){
-		return true;
-	}
-	if(map[row+col*9]!=0){
-			if(col==8){
-				if(solver2(row+1,0))
-					return true;
-			}
-			else {
-				if(solver2(row,col+1))
-					return true;
-			}
-			return false;
-		}
-
-	for(int num=1;num<10;num++){
-		map[row+col*9]=num;
-		if(check()==true){
-			if(col==8){
-				if(solver2(row+1,0))
-					return true;
-			}
-			else {
-				if(solver2(row,col+1))
-					return true;
-			}
-		}
-			map[row+col*9]=0;
-	}
-}
-
-
-
 
 void Sudoku::solve(){
 	int	temp1[81];
 	int temp2[81];
-	for(int i=0;i<81;i++)
+	int j=1;
+	for(int i=0;i<9;i++){
+		num[i]=j;
+		j++;
+	}
+	for(int i=0;i<81;i++){
 		temp1[i]=map[i];
+	}
 	if(check()==false){
 		cout<<"0"<<endl;
+			return;
 	}
 	else{
 	solver(0,0);
+	for(int i=0;i<81;i++){
+		if(map[i]==0){
+			cout<<"0"<<endl;
+				return;
+		}
+	}
+	for(int j=0;j<9;j++){
 		for(int i=0;i<81;i++){
 			temp2[i]=map[i];
 		}
 		for(int i=0;i<81;i++){
 			map[i]=temp1[i];
 		}
-	solver2(0,0);
-		for(int i=0;i<81;i++){
+
+		for(int i=0;i<9;i++){
+		num[i]+=1;
+			if(num[i]==10)
+				num[i]=1;
+	}
+	solver(0,0);		
+	for(int i=0;i<81;i++){
+			if(map[i]!=temp2[i]){
+				cout<<"2"<<endl;
+				return;
+			}
+		}
+	}
+
+	for(int i=0;i<81;i++){
 			if(map[i]!=temp2[i]){
 				cout<<"2"<<endl;
 				return;
@@ -329,7 +323,6 @@ void Sudoku::giveQuestion(){
 }
 void Sudoku::transform(){
 	srand(time(NULL));
-	readIn();
 	changeNum(rand()%9+1,rand()%9+1);
 	changeRow(rand()%3,rand()%3);
 	changeCol(rand()%3,rand()%3);
